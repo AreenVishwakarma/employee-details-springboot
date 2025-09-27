@@ -1,0 +1,84 @@
+<!-- Add_Employee.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Employee</title>
+    <style>
+        .form-box {
+            border: 2px solid black;
+            text-align: center;
+            width: 350px;
+            padding: 20px;
+            margin: auto;
+            margin-top: 50px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            font-family: Arial, sans-serif;
+        }
+        .form-box h2 {
+            margin-bottom: 20px;
+        }
+        .form-box label {
+            display: inline-block;
+            width: 100px;
+            text-align: left;
+        }
+        .form-box input {
+            width: 200px;
+            padding: 5px;
+            margin-bottom: 15px;
+        }
+        .form-box button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .form-box button:hover {
+            background-color: #45a049;
+        }
+        a{
+            text-decoration: none;
+            color: white
+        }
+/*        a.add-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        a.add-btn:hover {
+            background-color: #45a049;
+        }*/
+    </style>
+</head>
+<body>
+    <div class="form-box">
+        <h2>Add New Employee</h2>
+        <form th:action="@{/employees/save}" th:object="${employee}" method="post">
+            <label>Name:</label>
+            <input type="text" th:field="*{name}" required /><br>
+
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" required /><br>
+
+            <label>Designation:</label>
+            <input type="text" th:field="*{designation}" required /><br>
+
+            <label>Number:</label>
+            <input type="number" th:field="*{number}" required /><br>
+
+            <label>Salary:</label>
+            <input type="number" th:field="*{salary}" required /><br>
+
+            <button type="submit">Save</button>
+            <button><a href="/employees/list">View Employees</a></button>
+
+        </form>
+    </div>
+</body>
+</html>

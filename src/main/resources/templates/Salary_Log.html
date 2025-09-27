@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Incentive</title>
+    <style>
+        body {
+            background: #f5f7fa;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .form-box {
+            border: 2px solid #222;
+            text-align: left;
+            width: 400px;
+            padding: 32px 28px 24px 28px;
+            margin: 60px auto 0 auto;
+            border-radius: 12px;
+            box-shadow: 0 6px 30px rgba(50,50,93,0.12), 0 1.5px 7px rgba(0,0,0,0.16);
+            background: #fff;
+        }
+        .form-box h2 {
+            margin-bottom: 28px;
+            text-align: center;
+            color: #222;
+            letter-spacing: 1px;
+        }
+        .form-box label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #333;
+            letter-spacing: 0.5px;
+            font-size: 15px;
+        }
+        .form-box select,
+        .form-box input[type="text"],
+        .form-box input[type="email"],
+        .form-box input[type="number"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.2px solid #bcd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            background: #f6fafd;
+            color: #222;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .form-box select:focus,
+        .form-box input[type="text"]:focus,
+        .form-box input[type="email"]:focus,
+        .form-box input[type="number"]:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 3px #4caf507c;
+        }
+        .form-box input[readonly] {
+            background: #f2f2f2;
+            color: #777;
+            border-style: dashed;
+        }
+        .form-box button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #4CAF50;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-right: 12px;
+            margin-top: 10px;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .form-box button[type="submit"]:hover {
+            background: #388e3c;
+            transform: translateY(-2px) scale(1.04);
+        }
+        .form-box button a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .form-box button a:hover {
+            text-decoration: underline;
+        }
+        .add-btn {
+            display: inline-block;
+            margin-bottom: 18px;
+            padding: 9px 18px;
+            background-color: #1976d2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+        .add-btn:hover {
+            background-color: #145ea8;
+        }
+        @media only screen and (max-width: 500px) {
+            .form-box {
+                width: 98%;
+                padding: 20px 6px 18px 6px;
+            }
+            .form-box h2 {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-box">
+        <a href="/employees/form" class="add-btn">Add New Employee</a>
+        <h2>Add Incentive</h2>
+        <form th:action="@{/employees/salary-save}" th:object="${salary}" method="post">
+            <label for="emp">Choose Employee</label>
+            <select id="emp" name="empId" required>
+                <option value="">--Select--</option>
+                <option th:each="employee : ${employees}"
+                        th:value="${employee.id}"
+                        th:text="${employee.name}">
+                </option>
+            </select>
+
+            <label>Email:</label>
+            <input type="text" id="email" readonly placeholder="Employee's email">
+
+            <label>Designation:</label>
+            <input type="text" id="designation" readonly placeholder="Employee's designation">
+
+            <label>Incentive:</label>
+            <input type="number" th:field="*{incentive}" min="0" required placeholder="Enter incentive amount">
+
+            <button type="submit">Add Incentive</button>
+            <button style="background: #1976d2;">
+                <a href="/employees/salary-list">View Incentive</a>
+            </button>
+        </form>
+        <script>
+        document.getElementById('emp').addEventListener('change', function() {
+            var empId = this.value;
+            if(empId) {
+                fetch('/employees/employee/' + empId)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('email').value = data.email || "";
+                        document.getElementById('designation').value = data.designation || "";
+                    });
+            } else {
+                document.getElementById('email').value = "";
+                document.getElementById('designation').value = "";
+            }
+        });
+        </script>
+    </div>
+</body>
+</html>
